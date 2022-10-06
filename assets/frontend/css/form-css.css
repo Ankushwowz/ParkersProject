@@ -1,0 +1,108 @@
+.serviceactive
+{
+     background: #26cdff;
+}
+#read + [data-readmore-toggle], #read[data-readmore] {
+    display: block;
+    width: 100%;
+   
+    
+}
+
+.thm-btn-readmore {
+    width: 200px !important;
+    margin-left: 201px!important;;
+text-align:center !important;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #003eff;
+    background: #26cdff !important;
+    font-weight: normal;
+    color: #ffffff;
+}
+.ui-accordion .ui-accordion-header {
+    /* display: block; */
+    /* cursor: pointer; */
+    /* position: relative; */
+    /* margin: 2px 0 0 0; */
+    padding: .5em 7.5em 0.5em 1.7em !important;
+    font-size: 100%;
+}
+.ui-accordion .ui-accordion-icons {
+    padding-left: 2.2em;
+}
+
+
+
+.ui-accordion .ui-accordion-header {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    margin: 2px 0 0 0;
+    padding: .5em .5em .5em .7em;
+    font-size: 100%;
+}
+.ui-accordion .ui-accordion-icons {
+    padding-left: 2.2em;
+}
+.ui-accordion .ui-accordion-header {
+    /* display: block; */
+    /* cursor: pointer; */
+    /* position: relative; */
+    /* margin: 2px 0 0 0; */
+   /* padding: 15px 15px !important;*/
+    font-size: 100%;
+    background: #fff;
+   color:#000;
+}
+input[type="file"] {
+    z-index: 999;
+    line-height: 0;
+    font-size: 16px;
+    position: relative;
+    opacity: 9;
+    filter: alpha(opacity = 0);
+    -ms-filter: "alpha(opacity=0)";
+    margin: 0;
+    padding: 0;
+    left: 17px;
+}
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.icon {
+  padding: 18px;
+  background: #26cdff;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid dodgerblue;
+}
+
+/* Set a style for the submit button */
+.btn {
+  background-color: #26cdff;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}

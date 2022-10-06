@@ -1,0 +1,390 @@
+<?php 
+
+/*$id = $_GET['msg'];
+echo $id;*/
+//echo "<pre>"; print_r($view_resume['full_name']); die; 
+if(!empty($_GET['msg']) && $_GET['msg']){
+
+    $id = $_GET['msg'];
+
+    //$update_status = $this->Administrator_Model->updatestatus($id);
+    //echo $id;
+    $this->Administrator_Model->updatestatus($id);
+    $this->session->set_flashdata('success', 'Message Read.');
+    redirect('administrator/resume');
+   
+}
+
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/assets/pages/data-table/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components/ekko-lightbox/dist/ekko-lightbox.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>admintemplate/bower_components/lightbox2/dist/css/lightbox.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    jQuery('.assign_resume_cls').click(function(){
+        var resume_id=  jQuery(this).attr('rel');
+        //alert(resume_id);
+        jQuery('#assign_resume_id').val(resume_id);
+        });
+    jQuery("#assign-resume-to-user").click(function(){     
+        var resume_id = $('#assign_resume_id').val();
+        var assign_id = $('#user_id').val();
+        console.log("Resume" + resume_id);
+        console.log("Assign" + assign_id);
+        
+        if(assign_id==''){
+                $('#user_id').css('border-color','red');
+                return false;
+            }
+
+            var baseUrl = "<?php echo base_url()?>";
+            jQuery.ajax({
+                type: "POST",
+                url: baseUrl+'administrator/assignResume',
+                data: {
+                resume_id : resume_id,
+                user_id : assign_id
+                
+                },
+                success: function(msg) 
+                {
+                    if(msg==1){
+                     window.location.href = baseUrl+'administrator/resume?msgs=resume-assign'; 
+
+                    }
+                }
+            });
+
+});
+});
+
+</script>
+
+ <script type="text/javascript">
+    $(document).ready(function(){
+    $('.cse_status').on('change', function(e) { 
+    var status = $(this).val();
+    //alert(status);
+   var contact_id = $(this).attr('rel');
+   alert(contact_id);
+   if(contact_id != ''){
+    jQuery.ajax({
+        url:"<?php echo base_url(); ?>administrator/cse_status",
+        method: "POST",
+        data: {status:status,contact_id: contact_id},
+        success: function(data){
+            window.location.href="<?php echo base_url(); ?>administrator/resume";
+        }
+    });
+   }else{
+    alert('Status Not Changed');
+   }
+   
+
+});
+});
+</script>
+
+
+<!-- <script type="text/javascript">
+
+$(document).ready(function(){
+$('.assiged_cse').on('change', function(e) {    
+    var cse_id = $(this).val();
+    //alert(cse_id);
+    var resume_id = $(this).attr('rel');
+    e.preventDefault();
+    if(cse_id != ''){
+        jQuery.ajax({
+            url: "<?php echo base_url(); ?>administrator/assign_cse",
+            method: "POST",
+            data: {cse_id:cse_id,resume_id:resume_id},
+            success:function(data){
+                //alert("here");
+                window.location.href = "<?php echo base_url(); ?>administrator/resume";
+                     //window.location.href = data.redirect;
+            }
+        });
+    }else{
+        alert('Not Done');
+    }
+});
+});
+
+</script> -->
+<script type="text/javascript">
+    $(document).ready(function(){
+    $('.selectstatus').on('change', function(e) {    
+   var status = $(this).val();
+    //alert(status);
+   var resume_id = $(this).attr('rel');
+    //alert(resume_id);
+   if(resume_id != ''){
+    jQuery.ajax({
+        url:"<?php echo base_url(); ?>administrator/change_status",
+        method: "POST",
+        data: {status:status,resume_id: resume_id},
+        success: function(data){
+            window.location.href="<?php echo base_url(); ?>administrator/resume";
+        }
+    });
+   }else{
+    alert('Status Not Changed');
+   }
+   
+
+});
+});
+</script>
+
+
+<!-- <script type="text/javascript">
+
+$(document).ready(function(){
+$('.assiged_cse').on('change', function(e) {    
+    var cse_id = $(this).val();
+    //alert(cse_id);
+    var resume_id = $(this).attr('rel');
+    e.preventDefault();
+    if(cse_id != ''){
+        jQuery.ajax({
+            url: "<?php echo base_url(); ?>administrator/assign_cse",
+            method: "POST",
+            data: {cse_id:cse_id,resume_id:resume_id},
+            success:function(data){
+                //alert("here");
+                window.location.href = "<?php echo base_url(); ?>administrator/resume";
+                     //window.location.href = data.redirect;
+            }
+        });
+    }else{
+        alert('Not Done');
+    }
+});
+});
+
+</script> -->
+
+<script>
+    $(document).ready(function(){
+        $('.cls-accept').on('click',function(e){
+            //$( this ).removeClass(".cls-hidecse");
+                //$(".cls-hidecse").show();
+
+            var resume_id = $(this).attr('rel');
+            var user_id = $(this).attr('rel-admin');
+            //alert(resume_id);
+            //alert(user_id);
+             e.preventDefault();
+            if(resume_id != ''){
+                jQuery.ajax({
+                    url: "<?php echo base_url(); ?>administrator/accept_franchise",
+                    method: "POST",
+                    data: {resume_id:resume_id,user_id:user_id},
+                    success:function(data){
+                        console.log(data);
+                        window.location.href = "<?php echo base_url(); ?>administrator/resume";
+                        $( this ).addClass(".cls-showcse" );
+                        //$(this).removeClass('.cls-hidecse').addClass('cls-showcse');                        //alert("here");
+                             //window.location.href = data.redirect;
+                             
+                    }
+                });
+            }else{
+                alert('Not Done');
+            }
+        });
+    })
+</script>
+
+   
+ 
+            <!-- Page-header start -->
+            <div class="page-header">
+                <div class="page-header-title">
+                    <h4><?php echo $title; ?></h4>
+                </div>
+                <div class="page-header-breadcrumb">
+                    <ul class="breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url(); ?>administrator/dashboard">
+                                <i class="icofont icofont-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>administrator/resume">Resume</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#!">List Resume</a>
+                        </li>
+                    </ul>
+                </div>
+               
+            </div>
+            <!-- Page-header end -->
+            <!-- Page-body start -->
+            <div class="page-body">
+                 <?php 
+                    $assign_array = array('1','2','3'); 
+                    $array = array('1','2','4'); 
+                    $array_admin_user = array('1','2'); 
+                ?>
+                <!-- DOM/Jquery table start $testimonials-->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="table-responsive dt-responsive">
+                            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <!-- <th>Image</th> -->
+                                        <th>Service Name</th>
+                                        <th>Apply for Job</th>
+                                        <th>Title</th>
+                                        <th>Name</th>                                        
+                                        <th>City</th>  
+                                        <th>Assign By</th>                                     
+                                        <?php if($this->session->userdata('role_id')==1 || $this->session->userdata('role_id')==2){ ?>                       
+                                        <th>Assign To</th> <?php } ?>        
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 <?php
+                                 $count = 1;
+                                  foreach($resume_job as $resume) : 
+                                   //echo "<pre>"; print_r($resume); die;
+                                    ?>
+                                    <tr>
+                                        <td class="resume_id"><?php echo $count; ?></td>
+                                        <td><?php echo $resume['Service_name']; ?></td>
+                                        <td><?php echo $resume['job_title']; ?></td>
+                                        <td><?php echo $resume['title']; ?></td>
+                                        <td><?php echo $resume['full_name']; ?></td>
+                                        <td><?php echo $resume['city_name']; ?></td>                                    
+
+                                        <td><?php 
+                                            if($this->session->userdata('role_id')==4){ echo $resume['username']; } 
+                                            if($this->session->userdata('role_id')==3 || $this->session->userdata('role_id')==1 || $this->session->userdata('role_id')==2){ echo $resume['assignedby']; } 
+                                        ?></td>
+                                        <?php if($this->session->userdata('role_id')==1 || $this->session->userdata('role_id')==2){ ?>
+                                        <td><?php 
+                                        if($this->session->userdata('role_id')==1 || $this->session->userdata('role_id')==2){ echo $resume['username']; }
+                                            //if($this->session->userdata('role_id')==3){ echo $resume['cse_assigned']; } 
+                                        ?></td>
+                                    <?php } ?>
+                                                                      
+
+                                        <td>
+                                            <a class="label label-inverse-info" href='<?php echo base_url(); ?>jobs/viewresume/<?php echo base64_encode($resume['id']); ?>'>View</a>
+                                       <?php if($this->session->userdata('role_id')==3 && $resume['franch_status']!='accepted'){ ?>
+                                        
+                                            <a class="label label-inverse-primary enable cls-accept" rel-admin = "<?php echo $resume['user_id']; ?>" rel="<?php echo $resume['id']; ?>">Accept</a>
+
+                                           <a class="label label-inverse-warning desable" href='<?php echo base_url(); ?>administrator/reject_franchise/<?php echo $resume['id']; ?>'>Reject</a>
+                                            
+                                   <!-- <a  class="label label-inverse-primary assign_resume_cls" rel="<?php echo $resume['id']; ?>"  class="label label-inverse-info" href='#' data-toggle="modal" data-target="#myModalAssignorder">Assign Resume CSE</a> -->                              
+
+                                       <?php  } else{if($this->session->userdata('role_id')==1){ ?>
+                                             <a  class="label label-inverse-primary assign_resume_cls" rel="<?php echo $resume['id']; ?>"  class="label label-inverse-info" href='#' data-toggle="modal" data-target="#myModalAssignorder">Assign Resume</a>
+                                        <?php } } ?>
+                                            
+                                        </td>
+
+                                                                           
+                                    </tr>
+                                <?php $count++; endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- DOM/Jquery table end -->
+                        
+                      
+
+                    </div>
+                </div>
+            </div>
+            <!-- Page body end -->
+        </div>
+    </div>
+    <!-- Main-body end -->  
+
+
+<!----- myModalAssignorder------------------------>
+        <div id="myModalAssignorder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header change-role-m-h">
+
+        <h4 class="modal-title">Assign Resume</h4>
+        </div>
+        <div class="modal-body">
+            <?php if (in_array($this->session->userdata('role_id'), $assign_array)){  ?>
+        <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Country:</label>
+        <div class="col-sm-9">
+        <select name="country" id="country" class="form-control">
+                     <option value="">Select Country</option>
+                            <?php
+                            foreach($country as $row)
+                            { ?>
+                            <option value="<?php echo $row->id; ?>" > <?php echo $row->name; ?></option>
+                            <?php  }
+                            ?>
+                  
+        </select>
+        
+        
+        </div>
+        </div>
+        
+        <div class="form-group row">
+        <label class="col-sm-3 col-form-label">State :</label>
+        <div class="col-sm-9">
+        <select name="state" id="state" class="form-control input-lg" >
+                            <option value="">Select State</option>
+                        </select>
+        
+        
+        </div>
+        </div>
+            <?php } ?>
+        
+        <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Assign Resume :</label>
+        <div class="col-sm-9">
+        <select name="users" class="form-control" id="user_id">
+        <?php if (in_array($this->session->userdata('role_id'), $array_admin_user)){  ?>
+        <option value=""> Select Franchise Executive</option>
+        <?php } else { ?>
+        <option value=""> Select Customer Support Executive </option>
+        <?php } ?>
+        
+
+        </select>
+        
+        <input type="hidden" id="assign_resume_id" name="resume_id" value="" >
+        </div>
+        </div>
+
+          <div class="form-group row">
+        <label class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="assign-resume-to-user">Submit</button>
+        </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+
+        </div>
+        </div>

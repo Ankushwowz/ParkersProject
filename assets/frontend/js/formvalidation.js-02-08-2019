@@ -1,0 +1,101 @@
+$(document).ready(function(){
+$('#packageprice').change(function(){
+	var str = $(this).val();
+	var amount_value = str.split("_");
+	$('#ChargeAmount').val(amount_value[1]);
+});
+
+$( "#sale_form" ).submit(function( event ){ 
+
+
+//on form submit       
+        var proceed = true;
+        //loop through each field and we simply change border color to red for invalid fields       
+        $("#sale_form input[required=true],#sale_form radio[required=true],#sale_form file[required=true],#sale_form textarea[required=true],#sale_form select[required=true]").each(function(){
+                $(this).css('border-color',''); 
+                if(!$.trim($(this).val())){ //if this field is empty 
+                    $(this).css('border-color','red'); //change border color to red   
+					proceed = false; //set do not proceed flag
+                }
+                //check invalid email
+                var email_reg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/; 
+                if($(this).attr("type")=="email" && !email_reg.test($.trim($(this).val()))){
+                    $(this).css('border-color','red'); //change border color to red  
+					 proceed = false; //set do not proceed flag   
+					
+                }
+        });
+       
+       
+		
+	  if(proceed==true){}else
+		{
+		  event.preventDefault(); 
+		}
+    });
+	
+
+ $("#sale_form input[required=true],#sale_form radio[required=true],#sale_form file[required=true],#sale_form textarea[required=true]").keyup(function() { 
+        $(this).css('border-color',''); 
+});
+	
+	 $("#sale_form select[required=true]").change(function() { 
+        $(this).css('border-color',''); 
+});
+	
+	
+	
+ $('#country').change(function(){
+	
+          var country_id = $('#country').val();
+          if(country_id != '')
+          {
+			  var base_url =$('#base_url').val();
+			$.ajax({
+            url:base_url+"administrator/fetch_state",
+            method:"POST",
+            data:{country_id:country_id},
+            success:function(data)
+            {
+             $('#state').html(data);
+             $('#city').html('<option value="">Select City</option>');
+            }
+           });
+          }
+          else
+          {
+           $('#state').html('<option value="">Select State</option>');
+           $('#city').html('<option value="">Select City</option>');
+          }
+         });
+
+         /*$('#state').change(function(){
+          var state_id = $('#state').val();
+          if(state_id != '')
+          {
+           $.ajax({
+            url:"<?php echo base_url(); ?>administrator/fetch_city",
+            method:"POST",
+            data:{state_id:state_id},
+            success:function(data)
+            {
+             $('#city').html(data);
+            }
+           });
+          }
+          else
+          {
+           $('#city').html('<option value="">Select City</option>');
+          }
+         });*/
+		 
+		$(".digits-cls").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+        //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+
+});
